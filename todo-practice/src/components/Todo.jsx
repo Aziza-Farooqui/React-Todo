@@ -5,24 +5,32 @@ import { useRef } from 'react'
 
 const Todo = () => {
 
-  const [todo,setTodo]=useState([]);
+  const [todoList,setTodoList]=useState([]);
   const inputRef=useRef();
 
   const addBUtton=()=>{
       const inputText =inputRef.current.value.trim();
 
-      if(inputText ===" "){
+      if(inputText === ""){
         return null;
       }
 
       const newTodo = {
-        id:Date.now(),
-        text:inputText,
-        isComplete:  false,
+        id: Date.now(),
+        text: inputText,
+        isComplete: false,
       }
-       setTodo((prev)=> [...prev , newTodo]);
+
+      setTodoList((prev)=> [...prev , newTodo]);
        inputRef.current.value= "";
-  }
+    }
+
+    const deleteTodo = (id)=>{
+      setTodoList((prevTodos)=>{
+        return prevTodos.filter((todo)=> todo.id !== id)
+      })
+    }
+
 
   return (
     <div className='bg-white place-self-center w-11/12 max-w-md flex flex-col p-7 min-h-[500px] rounded-xl'>
@@ -36,12 +44,11 @@ const Todo = () => {
         <button onClick={addBUtton} className='border-none rounded-full cursor-pointer bg-orange-600 h-14 w-32 text-white font-medium text-lg'>ADD</button>
       </div>
 
-      <div className="">
-           {todo.map((item,index)=>{
-              return <TodoItems key={index} data={item.text} id={item.id} isComplete={item.isComplete}/>
+      <div>
+           {todoList.map((item,index)=>{
+              return <TodoItems key={index} data={item.text} isComplete={item.isComplete} id={item.id} deleteTodo={deleteTodo} />
            })}
-
-        {/* <TodoItems data='Sample Todo'/> */}
+          
       </div>
     </div>
   )
