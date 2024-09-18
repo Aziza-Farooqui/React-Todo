@@ -8,7 +8,7 @@ const TodoItems = ({data,id,isComplete , deleteTodo , toggle}) => {
     <div onClick={()=>{toggle(id)}} className='flex items-center my-3 gap-2'>
       <div className='flex flex-1 items-center cursor-pointer'>
         <img src={isComplete ? tick : not_tick}  className='w-7' alt="tick_icon" />
-        <p className='text-slate-700 ml-4 text-[17px]'>
+        <p className={`text-slate-700 ml-4 text-[17px] ${isComplete ? "line-through" : ""}`}>
             {data}
         </p>
       </div>
