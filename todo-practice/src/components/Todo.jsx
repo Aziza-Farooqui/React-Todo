@@ -1,8 +1,29 @@
-import React from 'react'
+import React, { useState } from 'react'
 import todo_icon from '../assets/todo_icon.png'
 import TodoItems from './TodoItems'
+import { useRef } from 'react'
 
 const Todo = () => {
+
+  const [todo,setTodo]=useState([]);
+  const inputRef=useRef();
+
+  const addBUtton=()=>{
+      const inputText =inputRef.current.value.trim();
+
+      if(inputText ===" "){
+        return null;
+      }
+
+      const newTodo = {
+        id:Date.now(),
+        text:inputText,
+        isComplete:  false,
+      }
+       setTodo((prev)=> [...prev , newTodo]);
+       inputRef.current.value= "";
+  }
+
   return (
     <div className='bg-white place-self-center w-11/12 max-w-md flex flex-col p-7 min-h-[500px] rounded-xl'>
       <div className="flex item-center mt-7 gap-2">
@@ -11,12 +32,16 @@ const Todo = () => {
       </div>
       
       <div className="flex items-center my-7 bg-gray-400 rounded-full">
-        <input className='bg-transparent border-0 outline-none flex-1 h-14 pl-6 pr-2 placeholder:text-slate-600' type="text"  placeholder='Add Task'/>
-        <button className='border-none rounded-full cursor-pointer bg-orange-600 h-14 w-32 text-white font-medium text-lg'>ADD</button>
+        <input  ref={inputRef} className='bg-transparent border-0 outline-none flex-1 h-14 pl-6 pr-2 placeholder:text-slate-600' type="text"  placeholder='Add Task'/>
+        <button onClick={addBUtton} className='border-none rounded-full cursor-pointer bg-orange-600 h-14 w-32 text-white font-medium text-lg'>ADD</button>
       </div>
 
       <div className="">
-        <TodoItems data='Sample Todo'/>
+           {todo.map((item,index)=>{
+              return <TodoItems key={index} data={item.text} id={item.id} isComplete={item.isComplete}/>
+           })}
+
+        {/* <TodoItems data='Sample Todo'/> */}
       </div>
     </div>
   )
